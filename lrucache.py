@@ -1,15 +1,29 @@
 from entry import Entry
 
+class Orderings:
+
+	def __init__(self):
+		self.orderings = []
+
+	def add(self,entry):
+		# if entry already has an ordering # delete the key from the LRU ordering list
+		if (self.orderings[entry.ordering]==entry.key):
+			del self.orderings[entry.ordering]
+
+		# update ordering# on entry
+		self.orderings.append(entry.key)
+		entry.ordering = len(self.orderings) - 1
+
+
 # least recently used cache datastructure removes least frequently used item 
 # once it's full
-
 class LRUCache:
 	
 	def __init__(self,maxsz=1000):
 		self.maxSize = maxsz;
 		self._curSize = 0; # the current size of the cache on initialization
 		self._cache = {}
-		self._ordering = []
+		self._ordering = Orderings()
 
 	# pretty prints the content of the datastructure
 	def __str__():
@@ -28,8 +42,7 @@ class LRUCache:
 	def _add_entry(self,entry):
 		self._cache[entry.key] = entry.value;
 		self._curSize += entry.size;
-		self._ordering.append(entry); # add to end of the list
-
+		# self._ordering.append(entry); # add to end of the list
 
 	def _add(self,entry):
 		# if not already in cache can add it
@@ -43,6 +56,8 @@ class LRUCache:
 	def store(self,key,value,size):
 		self._add(Entry(key,value,size)) 
 
+	def fetch(self,key):
+		return self._cache[key]
 
  	# when no more space on the LRU cache, LRU entry needs to be evicted
 	def _evict(self):
