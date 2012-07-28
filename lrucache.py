@@ -1,4 +1,4 @@
-
+from entry import Entry
 
 # least recently used cache datastructure removes least frequently used item 
 # once it's full
@@ -31,19 +31,22 @@ class LRUCache:
 		self._ordering.append(entry); # add to end of the list
 
 
-	def add(self,entry):
-		# if 
+	def _add(self,entry):
+		# if not already in cache can add it
 		if(not self.isInCache(entry.key)):
+			# if no more space, make some space first
 			if (self.willExceedesMaxSize(entry.size)):
-				self.evictLRU()
+				self._evict()
 			self._add_entry(entry)
-
 		""" update ordering of the entry """
+
+	def store(self,key,value,size):
+		self._add(Entry(key,value,size)) 
 
 
  	# when no more space on the LRU cache, LRU entry needs to be evicted
-	def evictLRU(self):
-		" "
+	def _evict(self):
+		""" remove least recently used """
 
 
 

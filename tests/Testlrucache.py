@@ -17,12 +17,15 @@ class TestLRUCache(object):
 		assert False == self.lruc.willExceedesMaxSize(1)
 
 	def test_isInCache(self):
-		self.lruc2.add(Entry('b','boy',3))
+		self.lruc2._add(Entry('b','boy',3))
 		assert True==self.lruc2.isInCache('b')
+		assert False==self.lruc2.isInCache('a') # we didn't put 'a' in this cache
+		self.lruc2.store('c','cat',3)
+		assert True ==self.lruc2.isInCache('c')
 
 	def test_add(self):
 		ent = Entry('a','apple',5)
-		self.lruc.add(ent);
+		self.lruc._add(ent);
 		assert self.lruc._curSize == 5
 		assert self.lruc._cache['a']=='apple'
 
