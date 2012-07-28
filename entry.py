@@ -5,4 +5,5 @@ class Entry:
 		self.key = key
 		self.value = value
 		self.size = size
+		self.ordering = 0
 
