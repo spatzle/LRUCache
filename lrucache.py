@@ -1,18 +1,23 @@
 from entry import Entry
+import Queue
 
-class Orderings:
+# class Orderings:
 
-	def __init__(self):
-		self.orderings = []
+# 	def __init__(self):
+# 		self.orderings = []
+# 		# heapify(self.orderings)
 
-	def add(self,entry):
-		# if entry already has an ordering # delete the key from the LRU ordering list
-		if (self.orderings[entry.ordering]==entry.key):
-			del self.orderings[entry.ordering]
+# 	def add(self,entry):
+# 		# # if this is a brand new entry
+# 		# if (entry.ordering==-1):
+# 		# 	entry.ordering=0
+# 		# 	# if entry already has an ordering #, delete the key from the LRU ordering list
+# 		# elif (self.orderings[entry.ordering]==entry.key):
+# 		# 	del self.orderings[entry.ordering]
+# 		# # update ordering# on entry
+# 		# self.orderings.append(entry.key)
+# 		# entry.ordering = len(self.orderings) - 1
 
-		# update ordering# on entry
-		self.orderings.append(entry.key)
-		entry.ordering = len(self.orderings) - 1
 
 
 # least recently used cache datastructure removes least frequently used item 
@@ -23,7 +28,7 @@ class LRUCache:
 		self.maxSize = maxsz;
 		self._curSize = 0; # the current size of the cache on initialization
 		self._cache = {}
-		self._ordering = Orderings()
+		self._ordering = Queue.PriorityQueue()
 
 	# pretty prints the content of the datastructure
 	def __str__():

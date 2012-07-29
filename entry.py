@@ -1,3 +1,5 @@
+import time
+
 # an item in the cache
 class Entry:
 
@@ -5,5 +7,4 @@ class Entry:
 		self.key = key
 		self.value = value
 		self.size = size
-		self.ordering = 0
-
+		self.epochtimestamp = int(time.time())	
