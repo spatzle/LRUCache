@@ -42,12 +42,11 @@ class LRUCache:
 	def isInCache(self,key):
 		return self._cache.has_key(key)
 
-
 	# what should be cached, and the size of the item to be cached
 	def _add_entry(self,entry):
-		self._cache[entry.key] = entry.value;
-		self._curSize += entry.size;
-		# self._ordering.append(entry); # add to end of the list
+		self._cache[entry.key] = entry.value
+		self._curSize += entry.size
+		self._ordering.put(entry) # add to end of the list
 
 	def _add(self,entry):
 		# if not already in cache can add it
@@ -56,7 +55,6 @@ class LRUCache:
 			if (self.willExceedesMaxSize(entry.size)):
 				self._evict()
 			self._add_entry(entry)
-		""" update ordering of the entry """
 
 	def store(self,key,value,size):
 		self._add(Entry(key,value,size)) 
