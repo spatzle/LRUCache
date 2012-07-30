@@ -1,22 +1,23 @@
 from entry import Entry
+import heapq
+
 import Queue
 
 # class Orderings:
 
 # 	def __init__(self):
 # 		self.orderings = []
-# 		# heapify(self.orderings)
 
 # 	def add(self,entry):
-# 		# # if this is a brand new entry
-# 		# if (entry.ordering==-1):
-# 		# 	entry.ordering=0
-# 		# 	# if entry already has an ordering #, delete the key from the LRU ordering list
-# 		# elif (self.orderings[entry.ordering]==entry.key):
-# 		# 	del self.orderings[entry.ordering]
-# 		# # update ordering# on entry
-# 		# self.orderings.append(entry.key)
-# 		# entry.ordering = len(self.orderings) - 1
+		# # if this is a brand new entry
+		# if (entry.ordering==-1):
+		# 	entry.ordering=0
+		# 	# if entry already has an ordering #, delete the key from the LRU ordering list
+		# elif (self.orderings[entry.ordering]==entry.key):
+		# 	del self.orderings[entry.ordering]
+		# # update ordering# on entry
+		# self.orderings.append(entry.key)
+		# entry.ordering = len(self.orderings) - 1
 
 
 
@@ -28,7 +29,7 @@ class LRUCache:
 		self.maxSize = maxsz;
 		self._curSize = 0; # the current size of the cache on initialization
 		self._cache = {}
-		self._ordering = Queue.PriorityQueue()
+		self._ordering = []
 
 	# pretty prints the content of the datastructure
 	def __str__():
@@ -46,7 +47,10 @@ class LRUCache:
 	def _add_entry(self,entry):
 		self._cache[entry.key] = entry.value
 		self._curSize += entry.size
-		self._ordering.put(entry) # add to end of the list
+		heapq.heappush(self._ordering, entry)
+
+	def _update_entry(self,entry):
+		heapq.heapreplace(self._ordering, entry)
 
 	def _add(self,entry):
 		# if not already in cache can add it

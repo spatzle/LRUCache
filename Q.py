@@ -18,3 +18,9 @@ q.put( Job(1, 'Important job') )
 while not q.empty():
     next_job = q.get()
     print 'Processing job:', next_job.description
+
+priority, value = q.get()
+
+while not q.empty():
+    next_job = q.get()
+    print 'Processing job:', next_job.description

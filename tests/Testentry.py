@@ -12,6 +12,6 @@ class Testentry(object):
 	# test that time stamps are working
 	def test_timestamp(self):
 		ent = Entry('b','boy',3)
-		time.sleep(1)
+		time.sleep(0.001)
 		ent2 = Entry('c','cat',4)
 		assert ent.epochtimestamp < ent2.epochtimestamp
