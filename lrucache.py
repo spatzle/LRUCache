@@ -19,11 +19,11 @@ class LRUCache:
 		print "maxSize of cache: "+self.maxSize
 
 	# will new item's size exceed max size
-	def willExceedesMaxSize(self,newSize):
+	def _willExceedesMaxSize(self,newSize):
 		return (self._curSize + newSize) >= self.maxSize
 
 	# is this key in cache
-	def isInCache(self,key):
+	def _isInCache(self,key):
 		return self._cache.has_key(key)
 
 	##########################
@@ -41,9 +41,9 @@ class LRUCache:
 
 	def _add(self,entry):
 		# if not already in cache can add it
-		if(not self.isInCache(entry.key)):
+		if(not self._isInCache(entry.key)):
 			# if no more space, make some space first
-			if (self.willExceedesMaxSize(entry.size)):
+			if (self._willExceedesMaxSize(entry.size)):
 				self._evict()
 			self._add_entry(entry)
 		else: # just update the time
@@ -54,7 +54,7 @@ class LRUCache:
 		self._add(Entry(key,value,size)) 
 
 	##########################
-	# store item in the cache
+	# fetch item from the cache
 	############################
 	def fetch(self,key):
 		return self._cache[key]
