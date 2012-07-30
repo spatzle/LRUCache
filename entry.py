@@ -7,8 +7,11 @@ class Entry:
 		self.key = key
 		self.value = value
 		self.size = size
-		self.epochtimestamp = (time.time())	
+		self.update_time()
 		return
+
+	def update_time(self):
+		self.epochtimestamp = (time.time())	
 		
 	def __cmp__(self, other):
 		return cmp(self.epochtimestamp, other.epochtimestamp)

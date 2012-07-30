@@ -3,23 +3,6 @@ import heapq
 
 import Queue
 
-# class Orderings:
-
-# 	def __init__(self):
-# 		self.orderings = []
-
-# 	def add(self,entry):
-		# # if this is a brand new entry
-		# if (entry.ordering==-1):
-		# 	entry.ordering=0
-		# 	# if entry already has an ordering #, delete the key from the LRU ordering list
-		# elif (self.orderings[entry.ordering]==entry.key):
-		# 	del self.orderings[entry.ordering]
-		# # update ordering# on entry
-		# self.orderings.append(entry.key)
-		# entry.ordering = len(self.orderings) - 1
-
-
 
 # least recently used cache datastructure removes least frequently used item 
 # once it's full
@@ -33,7 +16,7 @@ class LRUCache:
 
 	# pretty prints the content of the datastructure
 	def __str__():
-		print "maxSize: "+self.maxSize
+		print "maxSize of cache: "+self.maxSize
 
 	# will new item's size exceed max size
 	def willExceedesMaxSize(self,newSize):
@@ -42,6 +25,10 @@ class LRUCache:
 	# is this key in cache
 	def isInCache(self,key):
 		return self._cache.has_key(key)
+
+	##########################
+	# store item in the cache
+	############################
 
 	# what should be cached, and the size of the item to be cached
 	def _add_entry(self,entry):
@@ -59,16 +46,26 @@ class LRUCache:
 			if (self.willExceedesMaxSize(entry.size)):
 				self._evict()
 			self._add_entry(entry)
+		else: # just update the time
+			entry.update_time()
+			heapq.heapreplace(self._ordering, entry)
 
 	def store(self,key,value,size):
 		self._add(Entry(key,value,size)) 
 
+	##########################
+	# store item in the cache
+	############################
 	def fetch(self,key):
 		return self._cache[key]
 
+	############################################################
+	# delete item that is least frequently used cache
+	#############################################################
  	# when no more space on the LRU cache, LRU entry needs to be evicted
 	def _evict(self):
-		""" remove least recently used """
+		entry = heapq.heappop(self._ordering)
+		del self._cache[entry.key]
 
 
 
