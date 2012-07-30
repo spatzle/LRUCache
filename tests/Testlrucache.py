@@ -44,7 +44,7 @@ class TestLRUCache(object):
 		ent = Entry('a','apple',5)
 		self.lruc._add_entry(ent);
 		assert self.lruc._curSize == 5
-		assert self.lruc._cache['a']=='apple'
+		assert self.lruc._cache['a'].value=='apple'
 		afterCacheLen  = len(self.lruc._cache)
 		afterPQLen  = len(self.lruc._ordering)
 		assert beforeCacheLen == beforePQLen ==0
@@ -104,21 +104,35 @@ class TestLRUCache(object):
 		assert_raises(KeyError, self.lruc6.fetch('a'), "a") 
 		assert 'boy' == self.lruc6.fetch('b') # only b is left
 
-	# test to see that when trying to store same item again, updates the item's timestamp 
-	def test_store_same_value(self):
+	def store_same_value_test_helper(self):
+		lruc_test_store_same_item = LRUCache(10)
 		assert len(self.lruc_test_store_same_item._ordering) == len(self.lruc_test_store_same_item._cache) ==  0
 		self.lruc_test_store_same_item.store('b','boy',3)
+		time.sleep(0.001)
 		self.lruc_test_store_same_item.store('c','cat',3)
+		time.sleep(0.001)
 		self.lruc_test_store_same_item.store('d','dog',3)
-		assert len(self.lruc_test_store_same_item._ordering) == len(self.lruc_test_store_same_item._cache) ==  3
-		boy = self.lruc_test_store_same_item.fetch('b')
-		self.lruc_test_store_same_item.store('f','fun',3) # this evicts 'c' - cat, the next least recently used
+		time.sleep(0.001)
 		assert len(self.lruc_test_store_same_item._ordering) == len(self.lruc_test_store_same_item._cache) ==  3
 
-		# assert 'boy' == boy
-		# cat = self.lruc_test_store_same_item.fetch('c')
-		# assert 'cat' == cat
-		# fun = self.lruc_test_store_same_item.fetch('f')
-		# assert 'fun' == fun
-		# dog = self.lruc_test_store_same_item.fetch('d')
-		# assert 'dog' == dog
+		boy = self.lruc_test_store_same_item.fetch('b') # update the oldest entry's timestamp
+		self.lruc_test_store_same_item.store('f','fun',3) # this evicts 'c' - cat, the next least recently used
+
+		assert len(self.lruc_test_store_same_item._ordering) == len(self.lruc_test_store_same_item._cache) ==  3
+
+	# test to see that when trying to store same item again, updates the item's timestamp 
+	def test_store_same_value(self):
+		self.store_same_value_test_helper()
+		fun = self.lruc_test_store_same_item.fetch('f')
+		assert 'fun' == fun
+		dog = self.lruc_test_store_same_item.fetch('d')
+		assert 'dog' == dog
+		boy = self.lruc_test_store_same_item.fetch('b')
+		assert 'boy' == boy
+
+	@raises(KeyError)
+	def test_store_same_value_with_keyerror(self):
+		self.store_same_value_test_helper()
+		cat = self.lruc_test_store_same_item.fetch('c') # raises key error, because 'c' was evicted
+
+
