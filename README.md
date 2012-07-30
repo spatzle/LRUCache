@@ -1,5 +1,9 @@
+=== run ===
+
 python .\lrucache.py
 
-or nosetests
+=== Unittests: ===
+
+nosetests
 
 (to use nosetest, if nose is not installed, pip install nose)
