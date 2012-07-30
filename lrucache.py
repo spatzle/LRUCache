@@ -55,6 +55,7 @@ class LRUCache:
 
 	##########################
 	# fetch item from the cache
+	# return the value of the key
 	############################
 	def fetch(self,key):
 		return self._cache[key]

@@ -15,3 +15,10 @@ class Testentry(object):
 		time.sleep(0.001)
 		ent2 = Entry('c','cat',4)
 		assert ent.epochtimestamp < ent2.epochtimestamp
+
+	def test_touch(self):
+		ent = Entry('a','apple',5)
+		old_time = ent.epochtimestamp
+		ent.touch()
+		new_time = ent.epochtimestamp
+		

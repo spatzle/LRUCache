@@ -11,6 +11,7 @@ class TestLRUCache(object):
 		self.lruc2 = LRUCache(10)
 		self.lruc3 = LRUCache(10)
 		self.lruc4 = LRUCache(10)
+		self.lruc5 = LRUCache(10)
 
 	def test_init(self):
 		assert 0 == self.lruc._curSize
@@ -65,8 +66,17 @@ class TestLRUCache(object):
 		assert smallest == ent2
 
 
-	# def test_update_entry(self):
+	def test_evict(self):
 
+
+	# def fetch(self,key):
+	# 	return self._cache[key]
 	##############################
-	# test public methods
+	# test public api methods
 	##############################
+	def test_fetch(self):
+		ent = Entry('a','apple',5)	
+		self.lruc =  LRUCache(10)
+		self.lruc._add_entry(ent)
+		fetched_val = self.lruc.fetch(ent.key)
+		assert fetched_val =='apple'
