@@ -1,8 +1,6 @@
 from entry import Entry
 import heapq
-
 import Queue
-
 
 # least recently used cache datastructure removes least frequently used item 
 # once it's full
@@ -29,7 +27,6 @@ class LRUCache:
 	##########################
 	# store item in the cache
 	############################
-
 	# what should be cached, and the size of the item to be cached
 	def _add_entry(self,entry):
 		self._cache[entry.key] = entry.value
@@ -67,6 +64,3 @@ class LRUCache:
 	def _evict(self):
 		entry = heapq.heappop(self._ordering)
 		del self._cache[entry.key]
-
-
-

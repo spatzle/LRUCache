@@ -78,7 +78,6 @@ class TestLRUCache(object):
 		assert_raises(KeyError, self.lruc6.fetch('a'), "a")
 		assert 'boy' == self.lruc6.fetch('b')
 
-
 	##############################
 	# test public api methods
 	##############################
@@ -88,3 +87,6 @@ class TestLRUCache(object):
 		self.lruc._add_entry(ent)
 		fetched_val = self.lruc.fetch(ent.key)
 		assert fetched_val =='apple'
+
+	def test_store(self):
+		""" """
