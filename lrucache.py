@@ -47,7 +47,7 @@ class LRUCache:
 				self._evict()
 			self._add_entry(entry)
 		else: # just update the time
-			entry.update_time()
+			entry.touch()
 			heapq.heapreplace(self._ordering, entry)
 
 	def store(self,key,value,size):
