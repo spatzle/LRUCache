@@ -14,7 +14,12 @@ class TestLRUCache(object):
 		self.lruc4 = LRUCache(10)
 		self.lruc5 = LRUCache(10)
 		self.lruc6 = LRUCache(10)
+		self.lruc_test_store= LRUCache(6)
+		self.lruc_test_store_same_item= LRUCache(10)
 
+	##############################
+	# test construction
+	##############################	
 	def test_init(self):
 		assert 0 == self.lruc._curSize
 		assert 10 == self.lruc.maxSize
@@ -85,8 +90,35 @@ class TestLRUCache(object):
 		ent = Entry('a','apple',5)	
 		self.lruc =  LRUCache(10)
 		self.lruc._add_entry(ent)
-		fetched_val = self.lruc.fetch(ent.key)
-		assert fetched_val =='apple'
+		fetched = self.lruc.fetch(ent.key)
+		assert fetched =='apple'
+		
 
+	@raises(KeyError)
 	def test_store(self):
-		""" """
+		assert len(self.lruc_test_store._ordering) == len(self.lruc_test_store._cache) ==  0
+		self.lruc_test_store.store('a','apple',5)
+		assert len(self.lruc_test_store._ordering) == len(self.lruc_test_store._cache) ==  1
+		self.lruc_test_store.store('b','boy',3)
+		assert len(self.lruc_test_store._ordering) == len(self.lruc_test_store._cache) ==  1 # a got evicted
+		assert_raises(KeyError, self.lruc6.fetch('a'), "a") 
+		assert 'boy' == self.lruc6.fetch('b') # only b is left
+
+	# test to see that when trying to store same item again, updates the item's timestamp 
+	def test_store_same_value(self):
+		assert len(self.lruc_test_store_same_item._ordering) == len(self.lruc_test_store_same_item._cache) ==  0
+		self.lruc_test_store_same_item.store('b','boy',3)
+		self.lruc_test_store_same_item.store('c','cat',3)
+		self.lruc_test_store_same_item.store('d','dog',3)
+		assert len(self.lruc_test_store_same_item._ordering) == len(self.lruc_test_store_same_item._cache) ==  3
+		boy = self.lruc_test_store_same_item.fetch('b')
+		self.lruc_test_store_same_item.store('f','fun',3) # this evicts 'c' - cat, the next least recently used
+		assert len(self.lruc_test_store_same_item._ordering) == len(self.lruc_test_store_same_item._cache) ==  3
+
+		# assert 'boy' == boy
+		# cat = self.lruc_test_store_same_item.fetch('c')
+		# assert 'cat' == cat
+		# fun = self.lruc_test_store_same_item.fetch('f')
+		# assert 'fun' == fun
+		# dog = self.lruc_test_store_same_item.fetch('d')
+		# assert 'dog' == dog

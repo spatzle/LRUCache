@@ -13,8 +13,12 @@ class LRUCache:
 		self._ordering = []
 
 	# pretty prints the content of the datastructure
-	def __str__():
-		print "maxSize of cache: "+self.maxSize
+	def __str__(self):
+		retstr =  "maxSize of cache: "+str(self.maxSize)
+		for k in self._cache.iterkeys():
+			entry = self._cache[k]
+			retstr += ", key: "+k+" - "+entry.value
+		return retstr
 
 	# will new item's size exceed max size
 	def _willExceedesMaxSize(self,newSize):
@@ -29,7 +33,7 @@ class LRUCache:
 	############################
 	# what should be cached, and the size of the item to be cached
 	def _add_entry(self,entry):
-		self._cache[entry.key] = entry.value
+		self._cache[entry.key] = entry
 		self._curSize += entry.size
 		heapq.heappush(self._ordering, entry)
 
@@ -55,7 +59,9 @@ class LRUCache:
 	# return the value of the key
 	############################
 	def fetch(self,key):
-		return self._cache[key]
+		entry = self._cache[key]
+		entry.touch()
+		return entry.value
 
 	############################################################
 	# delete item that is least frequently used cache
@@ -64,3 +70,19 @@ class LRUCache:
 	def _evict(self):
 		entry = heapq.heappop(self._ordering)
 		del self._cache[entry.key]
+
+if __name__ == "__main__":
+	lruc_test_store_same_item= LRUCache(10)
+	lruc_test_store_same_item.store('b','boy',3)
+	lruc_test_store_same_item.store('c','cat',3)
+	lruc_test_store_same_item.store('d','dog',3)
+	# print lruc_test_store_same_item._cache
+	print lruc_test_store_same_item
+
+	lruc_test_store_same_item.fetch('b')
+	# print lruc_test_store_same_item._cache
+	print lruc_test_store_same_item
+
+	lruc_test_store_same_item.store('f','fun',3) 
+	# print lruc_test_store_same_item._cache
+	print lruc_test_store_same_item
