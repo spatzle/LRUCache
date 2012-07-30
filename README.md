@@ -1,6 +1,6 @@
 ### run 
 
-python .\lrucache.py
+python lrucache.py
 
 ### Unittests:
 
