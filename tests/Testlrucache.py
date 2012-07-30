@@ -1,5 +1,6 @@
 from lrucache import LRUCache
 from entry import Entry
+from nose.tools import assert_true, assert_raises
 import heapq
 import time
 from nose.tools import *
@@ -12,6 +13,7 @@ class TestLRUCache(object):
 		self.lruc3 = LRUCache(10)
 		self.lruc4 = LRUCache(10)
 		self.lruc5 = LRUCache(10)
+		self.lruc6 = LRUCache(10)
 
 	def test_init(self):
 		assert 0 == self.lruc._curSize
@@ -65,12 +67,18 @@ class TestLRUCache(object):
 		smallest = heapq.heappop(self.lruc4._ordering)
 		assert smallest == ent2
 
-
+	@raises(KeyError)
 	def test_evict(self):
+		ent = Entry('a','apple',5)	
+		ent2 = Entry('b','boy',3)	
+		self.lruc6._add_entry(ent)
+		self.lruc6._add_entry(ent2)
+		self.lruc6._evict()
+		assert len(self.lruc6._ordering) == len(self.lruc6._cache) ==  1
+		assert_raises(KeyError, self.lruc6.fetch('a'), "a")
+		assert 'boy' == self.lruc6.fetch('b')
 
 
-	# def fetch(self,key):
-	# 	return self._cache[key]
 	##############################
 	# test public api methods
 	##############################
