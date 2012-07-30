@@ -82,19 +82,30 @@ class LRUCache:
 
 if __name__ == "__main__":
 	lruc_test_store_same_item= LRUCache(10)
+
+	# add items to our cache
 	lruc_test_store_same_item.store('b','boy',3)
 	time.sleep(0.001)
 	lruc_test_store_same_item.store('c','cat',3)
 	time.sleep(0.001)
 	lruc_test_store_same_item.store('d','dog',3)
 	time.sleep(0.001)
-	# print lruc_test_store_same_item._cache
-	print lruc_test_store_same_item
 
-	lruc_test_store_same_item.fetch('b')
-	# print lruc_test_store_same_item._cache
+	# print to see what's in cache
+	print "1. After inserting 3 test items of size 3 each, on a cache size 10:"
 	print lruc_test_store_same_item
+	print "\n"
 
+	# update item 'b' timestamp
+	print "2. Update time stamp on 'b' by doing a fetch"
+	boy = lruc_test_store_same_item.fetch('b')
+	print "b's value fetched: "+boy
+	print lruc_test_store_same_item
+	print "\n"
+
+	# this will evict 'c', to make room for 'f'
+	# 'c' evicted, because b was just fetched, even though it was the oldest
+	print "3. evict 'c', so that 'f' can be added."
 	lruc_test_store_same_item.store('f','fun',3) 
-	# print lruc_test_store_same_item._cache
 	print lruc_test_store_same_item
+	print "\n"
